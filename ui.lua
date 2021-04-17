@@ -476,7 +476,7 @@ do
                     BackgroundTransparency  = 1;
                     Size                    = UDim2.new(0, 498, 0, 30);
                     Font                    = Enum.Font.SourceSansSemibold;
-                    Text                    = ("    " .. options.Text .. " : " .. options.Def);
+                    Text                    = ("    " .. options.Text .. " : " .. options.Def .. "%");
                     TextColor3              = Color3.fromRGB(255, 255, 255);
                     TextSize                = 15;
                     TextXAlignment          = Enum.TextXAlignment.Left;
@@ -680,6 +680,5 @@ do
             return T2;
         end;
     end;
+    return library
 end;
-
-return library

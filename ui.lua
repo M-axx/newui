@@ -564,6 +564,7 @@ do
                     Size                    = UDim2.new(0, 498, 0, 30);
                     Font                    = Enum.Font.SourceSansSemibold;
                     Text                    = ("    " .. options.Text);
+                    AutoButtonColor         = false;
                     TextColor3              = Color3.fromRGB(255, 255, 255);
                     TextSize                = 15;
                     TextXAlignment          = Enum.TextXAlignment.Left;
@@ -675,10 +676,71 @@ do
                         });
                     end;
                 end);
+
+                -- Funcs for drop downs
+                local A2 = {};
+        
+                function A2:Add(Name)
+                    local Button = library:Create("TextButton", {
+                        Parent                  = DropdownList;
+                        BackgroundColor3        = Color3.fromRGB(48, 50, 59);
+                        Size                    = UDim2.new(0, 417, 0, 25);
+                        Font                    = Enum.Font.SourceSans;
+                        TextColor3              = Color3.fromRGB(255, 255, 255);
+                        TextSize                = 14;
+                        AutoButtonColor         = false;
+                        Text                    = Name;
+                        BackgroundTransparency  = 1;
+                        BorderSizePixel         = 0;
+                        ZIndex                  = 3;
+                    });
+
+                    library:Create("UICorner", {
+                        CornerRadius    = UDim.new(0, 6);
+                        Parent          = Button;
+                    });
+
+                    Button.MouseEnter:Connect(function()
+                        Tween(Button, 0.2, {BackgroundTransparency = 0.5});
+                    end);
+
+                    Button.MouseLeave:Connect(function()
+                        Tween(Button, 0.2, {
+                            BackgroundTransparency = 1;
+                            BackgroundColor3 = Color3.fromRGB(48, 50, 59);
+                        });
+                    end);
+
+                    Button.MouseButton1Click:Connect(function()
+                        Tween(DropdownList, 0.2, {Size = UDim2.new(0, 498, 0, 0)});
+                        Options.Callback(Name);
+                    end);
+
+                    BodyYSize = BodyYSize + 25;
+                    
+                    if (Opened) then
+                        Tween(DropdownList, 0.2, {Size = UDim2.new(0, 498, 0, BodyYSize)});
+                    end;
+                end;
+
+                function A2:Remove(Name)
+                    for i, v in next, DropdownList:GetChildren() do
+                        if (v:IsA("TextButton") and v.Text:lower():find(Name)) then
+                            v:Destroy();
+                            BodyYSize = BodyYSize - 25;
+                        end;
+                    end;
+            
+                    if (Opened) then
+                        Tween(DropdownList, 0.2, {Size = UDim2.new(0, 498, 0, BodyYSize)});
+                    end;
+                end;
+
+                return A2;
             end;
 
             return T2;
         end;
     end;
-    return library
+return library
 end;

@@ -713,7 +713,7 @@ do
 
                     Button.MouseButton1Click:Connect(function()
                         Tween(DropdownList, 0.2, {Size = UDim2.new(0, 498, 0, 0)});
-                        Options.Callback(Name);
+                        options.Callback(Name);
                     end);
 
                     BodyYSize = BodyYSize + 25;

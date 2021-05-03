@@ -568,7 +568,7 @@ do
                     TextColor3              = Color3.fromRGB(255, 255, 255);
                     TextSize                = 15;
                     TextXAlignment          = Enum.TextXAlignment.Left;
-                    ZIndex                  = 2;
+                    ZIndex                  = 4;
                 });
         
                 -- UICorner Creation

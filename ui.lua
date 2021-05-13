@@ -568,7 +568,7 @@ do
                     TextColor3              = Color3.fromRGB(255, 255, 255);
                     TextSize                = 15;
                     TextXAlignment          = Enum.TextXAlignment.Left;
-                    ZIndex                  = 4;
+                    ZIndex                  = 2;
                 });
         
                 -- UICorner Creation
@@ -595,7 +595,7 @@ do
                     Position                = UDim2.new(0, 0, 0.899999976, 0);
                     Size                    = UDim2.new(0, 498, 0, 0);
                     ClipsDescendants        = true;
-                    ZIndex                  = 3;
+                    ZIndex                  = 5;
                 });
         
                 -- UICorner Creation
@@ -620,7 +620,7 @@ do
                         Text                    = v;
                         BackgroundTransparency  = 1;
                         BorderSizePixel         = 0;
-                        ZIndex                  = 3;
+                        ZIndex                  = 6;
                     });
         
                     -- UICorner Creation
@@ -713,7 +713,7 @@ do
 
                     Button.MouseButton1Click:Connect(function()
                         Tween(DropdownList, 0.2, {Size = UDim2.new(0, 498, 0, 0)});
-                        options.Callback(Name);
+                        Options.Callback(Name);
                     end);
 
                     BodyYSize = BodyYSize + 25;
@@ -742,5 +742,5 @@ do
             return T2;
         end;
     end;
-return library
+    return library
 end;

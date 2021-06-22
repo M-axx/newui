@@ -176,13 +176,13 @@ do
 
             -- Container Creation
             local Container = library:Create("Frame", {
-                Name                    = ("Container" .. name);
+                Name                    = "Container";
                 Parent                  = Containers;
                 BackgroundColor3        = Color3.fromRGB(29, 29, 29);
                 Position                = UDim2.new(0.018, 0, 0.177, 0);
                 Size                    = UDim2.new(0, 518, 0, 246);
                 ZIndex                  = 2;
-                BackgroundTransparency  = 0;
+                BackgroundTransparency  = not Containers:FindFirstChild("Container") and 0 or 1;
                 BorderSizePixel         = 0;
             });
 
@@ -241,13 +241,13 @@ do
 
             -- Cool Tab Effects
             Tab.MouseEnter:Connect(function()
-                Tween(Tab, 0.2, {
-                    BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                Tween(Tab, .2, {
+                    BackgroundColor3 = Color3.fromRGB(115, 129, 180)
                 });
             end);
 
             Tab.MouseLeave:Connect(function()
-                Tween(Tab, 0.2, {
+                Tween(Tab, .2, {
                     BackgroundColor3 = Color3.fromRGB(115, 129, 255)
                 });
             end);
@@ -266,6 +266,15 @@ do
             -- UI Object Functions
             local T2 = {};
 
+            function T2:Show()
+                for i, v in next, Containers:GetChildren() do
+                    if v == Container then
+                        v.Visible = true;
+                    else
+                        v.Visible = false;
+                    end
+                end;
+            end
             -- Toggle Func
             function T2:CreateToggle(options)
                 options = options or {
@@ -368,6 +377,7 @@ do
                     TextColor3              = Color3.fromRGB(255, 255, 255);
                     Font                    = Enum.Font.SourceSansSemibold;
                     Parent                  = ObjectsFrame;
+                    AutoButtonColor         = false;
                     Size                    = UDim2.new(0, 498, 0, 30);
                     BackgroundColor3        = Color3.fromRGB(34, 34, 34);
                     TextXAlignment          = Enum.TextXAlignment.Left;
@@ -381,8 +391,20 @@ do
                     CornerRadius    = UDim.new(0, 6);
                 });
 
+                ButtonStuff.MouseEnter:Connect(function()
+                    Tween(ButtonStuff, .2, {
+                        BackgroundColor3 = Color3.fromRGB(31, 31, 31);
+                    })
+                end)
+
+                ButtonStuff.MouseLeave:Connect(function()
+                    Tween(ButtonStuff, .2, {
+                        BackgroundColor3 = Color3.fromRGB(34, 34, 34);
+                    })
+                end)
                 -- Callback
                 ButtonStuff.MouseButton1Click:Connect(function()
+                    CircleAnim(ButtonLabel, ThisTheme.ButtonAccent, ThisTheme.Button)
                     options.Callback();
                 end);
             end;
@@ -522,25 +544,25 @@ do
                     SliderValue.Text    = "    " .. options.Text .. " : " .. tostring(Value) .. "%";
 
                     pcall(options.Callback, Value);
-                    SliderInner:TweenSize(UDim2.new(0.14, math.clamp(Mouse.X - SliderInner.AbsolutePosition.X, 0, 425), 0, 25), Enum.EasingDirection.InOut, Enum.EasingStyle.Linear, 0.07);
+                    SliderInner:TweenSize(UDim2.new(0, math.clamp(Mouse.X - SliderInner.AbsolutePosition.X, 0, 425), 0, 25), Enum.EasingDirection.InOut, Enum.EasingStyle.Linear, 0.07);
 
                     while game:GetService("RunService").RenderStepped:wait() and down do
                         Value               = math.floor((((tonumber(options.Max) - tonumber(options.Min)) / 425) * SliderInner.AbsoluteSize.X) + tonumber(options.Min)) or 0;
                         SliderValue.Text    = "    " .. options.Text .. " : " .. tostring(Value) .. "%";
 
                         pcall(options.Callback, Value);
-                        SliderInner:TweenSize(UDim2.new(0.14, math.clamp(Mouse.X - SliderInner.AbsolutePosition.X, 0, 425), 0, 25), Enum.EasingDirection.InOut, Enum.EasingStyle.Linear, 0.07);
+                        SliderInner:TweenSize(UDim2.new(0, math.clamp(Mouse.X - SliderInner.AbsolutePosition.X, 0, 425), 0, 25), Enum.EasingDirection.InOut, Enum.EasingStyle.Linear, 0.07);
                     end;
                 end);
         
-                UserInputService.InputEnded:connect(function(key)
+                UserInputService.InputEnded:Connect(function(key)
                     if (key.UserInputType == Enum.UserInputType.MouseButton1 and down) then
                         down                = false;
                         Value               = math.floor((((tonumber(options.Max) - tonumber(options.Min)) / 425) * SliderInner.AbsoluteSize.X) + tonumber(options.Min)) or 0;
                         SliderValue.Text    = "    " .. options.Text .. " : " .. tostring(Value) .. "%";
 
                         pcall(options.Callback, Value);
-                        SliderInner:TweenSize(UDim2.new(0.14, math.clamp(Mouse.X - SliderInner.AbsolutePosition.X, 0, 425), 0, 25), Enum.EasingDirection.InOut, Enum.EasingStyle.Linear, 0.07);
+                        SliderInner:TweenSize(UDim2.new(0, math.clamp(Mouse.X - SliderInner.AbsolutePosition.X, 0, 425), 0, 25), Enum.EasingDirection.InOut, Enum.EasingStyle.Linear, 0.07);
                     end;
                 end);
             end;
@@ -650,6 +672,7 @@ do
                         });
 
                         options.Callback(v);
+                        Dropdown.Text = "    "..options.Text..": "..v
                     end);
         
                     BodyYSize = BodyYSize + 25;
@@ -692,30 +715,39 @@ do
                         Text                    = Name;
                         BackgroundTransparency  = 1;
                         BorderSizePixel         = 0;
-                        ZIndex                  = 3;
+                        ZIndex                  = 6;
                     });
-
+        
+                    -- UICorner Creation
                     library:Create("UICorner", {
                         CornerRadius    = UDim.new(0, 6);
                         Parent          = Button;
                     });
-
+        
                     Button.MouseEnter:Connect(function()
-                        Tween(Button, 0.2, {BackgroundTransparency = 0.5});
-                    end);
-
-                    Button.MouseLeave:Connect(function()
                         Tween(Button, 0.2, {
-                            BackgroundTransparency = 1;
-                            BackgroundColor3 = Color3.fromRGB(48, 50, 59);
+                            BackgroundTransparency = 0.5;
                         });
                     end);
-
-                    Button.MouseButton1Click:Connect(function()
-                        Tween(DropdownList, 0.2, {Size = UDim2.new(0, 498, 0, 0)});
-                        Options.Callback(Name);
+        
+                    Button.MouseLeave:Connect(function()
+                        Tween(Button, 0.2, {
+                            BackgroundTransparency  = 1;
+                            BackgroundColor3        = Color3.fromRGB(48, 50, 59);
+                        });
                     end);
+        
+                    Button.MouseButton1Click:Connect(function()
+                        Opened = false;
 
+                        Tween(DropdownList, 0.2, {
+                            Size = UDim2.new(0, 498, 0, 0);
+                        });
+
+                        options.Callback(Name);
+                        Dropdown.Text = "    "..options.Text..": "..Name
+                    end);
+        
                     BodyYSize = BodyYSize + 25;
                     
                     if (Opened) then

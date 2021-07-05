@@ -31,8 +31,8 @@ function library:Create(class, prop)
 end;
 
 -- check
-if (CoreGui:FindFirstChild("MaxxHub")) then
-    CoreGui.MaxxHub:Destroy();
+if (_G.MaxxHub) then
+    _G.MaxxHub:Destroy();
 end;
 
 -- Main UI Build
@@ -45,7 +45,12 @@ do
         ResetOnSpawn    = false;
         Enabled         = true;
     });
-
+    game.UserInputService.InputBegan:Connect(function(inp)
+        if(inp.KeyCode == Enum.KeyCode.RightShift)then
+            MainScreen.Enabled = not MainScreen.Enabled 
+        end
+    end)
+    _G.MaxxHub = MainScreen
     -- MainFrame
     local MainFrame = library:Create("Frame", {
         Name                = "MaxxFrame";
